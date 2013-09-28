@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.ValueEventListener;
+
 public class MainActivity extends Activity {
 
     ListView messsagesList;
@@ -17,10 +21,25 @@ public class MainActivity extends Activity {
     EditText chatInput;
     ArrayAdapter<String> messagesAdapter;
 
+    Firebase roomRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        roomRef = new Firebase("https://chattie.firebaseio.com/room/0/");
+        roomRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot data) {
+                String msg = data.getName();
+                messagesAdapter.add(msg);
+            }
+
+            @Override
+            public void onCancelled() {
+            }
+        });
 
         messsagesList = (ListView) findViewById(R.id.messageList);
         messagesAdapter = new ArrayAdapter<String>(this, R.layout.message_row,
@@ -33,8 +52,14 @@ public class MainActivity extends Activity {
         sendButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                messagesAdapter.add(chatInput.getText().toString());
+                String msg = chatInput.getText().toString();
                 chatInput.setText("");
+
+                // messagesAdapter.add(msg);
+                Firebase newMessage = roomRef.push();
+                newMessage.setValue(v);
+
+                newMessage.setValue(msg);
             }
         });
     }
