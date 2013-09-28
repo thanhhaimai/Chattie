@@ -9,8 +9,26 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/label1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="Type something and click send" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/label1"
+        android:text="Send" />
+
+    <EditText
+        android:id="@+id/chatInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label1"
+        android:layout_toLeftOf="@id/sendButton"
+        android:inputType="textShortMessage"
+        android:text="" />
 
 </RelativeLayout>
